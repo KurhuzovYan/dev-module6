@@ -7,7 +7,7 @@ import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Main {
+public class Launcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
 
@@ -19,7 +19,10 @@ public class Main {
 
         flyway.migrate();
         ClientService clientService = new ClientService();
-        clientService.deleteById(2);
+        LOGGER.info(String.valueOf(clientService.create("Viktoriya")));
+        LOGGER.info(clientService.getById(5));
+        clientService.setName(1, "Mikhail");
+        clientService.deleteById(7);
         for (Client client : clientService.listAll()) {
             LOGGER.info(client.toString());
         }
