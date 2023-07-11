@@ -1,19 +1,28 @@
 package global.goit;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import global.goit.client.Client;
+import global.goit.client.ClientService;
+import global.goit.connection.Database;
+import org.flywaydb.core.Flyway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
+
     public static void main(String[] args) {
-        // Press Opt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Flyway flyway = Flyway
+                .configure()
+                .dataSource("jdbc:postgresql://35.238.176.199:5432/database_yan", "dev12", "dev12thebest")
+                .load();
 
-        // Press Ctrl+R or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
-
-            // Press Ctrl+D to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Cmd+F8.
-            System.out.println("i = " + i);
+        flyway.migrate();
+        ClientService clientService = new ClientService();
+        clientService.deleteById(2);
+        for (Client client : clientService.listAll()) {
+            LOGGER.info(client.toString());
         }
+
     }
 }
