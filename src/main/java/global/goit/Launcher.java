@@ -19,9 +19,9 @@ public class Launcher {
 
         flyway.migrate();
         ClientService clientService = new ClientService();
-        LOGGER.info(String.valueOf(clientService.create("Viktoriya")));
+        LOGGER.info(String.valueOf(clientService.create("Lina")));
         LOGGER.info(clientService.getById(5));
-        clientService.setName(1, "Mikhail");
+        clientService.setName(1, "Evgeniy");
         clientService.deleteById(7);
         for (Client client : clientService.listAll()) {
             LOGGER.info(client.toString());

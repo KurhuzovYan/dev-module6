@@ -18,14 +18,12 @@ public class ClientService {
     public Long create(String name) {
         Long id = null;
         try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO client (name) VALUES (?)");
+            PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO client (name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, name);
             preparedStatement.execute();
-            PreparedStatement selectName = getConnection().prepareStatement("SELECT client_id FROM client WHERE name LIKE ?");
-            selectName.setString(1, name);
-            ResultSet resultSet = selectName.executeQuery();
-            resultSet.next();
-            id = (long) resultSet.getInt("client_id");
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            generatedKeys.next();
+            id = generatedKeys.getLong(1);
         } catch (SQLException e) {
             LOGGER.error("Error = ", e);
         }
